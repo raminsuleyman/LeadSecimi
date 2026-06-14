@@ -17,7 +17,7 @@
 
 body{
     min-height:100vh;
-    overflow:hidden;
+    overflow-x:hidden;
     background:linear-gradient(-45deg,#0f172a,#1e293b,#312e81,#0f172a);
     background-size:400% 400%;
     animation:bg 12s ease infinite;
@@ -32,7 +32,7 @@ body{
 
 .screen{
     width:100%;
-    min-height:100vh;
+    min-height:100dvh;
     display:flex;
     justify-content:center;
     align-items:center;
@@ -53,6 +53,7 @@ body{
     padding:40px;
     text-align:center;
     box-shadow:0 20px 60px rgba(0,0,0,.3);
+    margin:20px 0;
 }
 
 h1{
@@ -93,7 +94,6 @@ h1{
     background:rgba(255,255,255,.08);
     border-radius:20px;
     padding:20px;
-    position:relative;
 }
 
 .avatar{
@@ -116,11 +116,13 @@ h1{
 
 .vote-btn{
     width:100%;
+    min-height:48px;
     border:none;
     cursor:pointer;
     border-radius:12px;
     padding:12px;
     font-weight:700;
+    font-size:16px;
 }
 
 .good{
@@ -158,35 +160,23 @@ h1{
 }
 
 @keyframes fall{
-    from{
-        transform:translateY(-50px) rotate(0);
-    }
-    to{
-        transform:translateY(110vh) rotate(720deg);
-    }
+    from{transform:translateY(-50px) rotate(0);}
+    to{transform:translateY(110vh) rotate(720deg);}
 }
 
 @media(max-width:700px){
-    h1{
-        font-size:2rem;
-    }
+    h1{font-size:2rem;}
 }
 </style>
 </head>
+
 <body>
 
 <div id="welcome" class="screen">
     <div class="card">
         <h1>🏆 Team Leader Seçimi</h1>
-
-        <p class="subtitle">
-            Komandamızın gələcək liderini seçmək üçün keçirilən
-            yüksək səviyyəli və tamamilə obyektiv səsverməyə xoş gəlmisiniz.
-        </p>
-
-        <button class="main-btn" onclick="startVote()">
-            Səsverməyə Başla
-        </button>
+        <p class="subtitle">Komandamızın gələcək liderini seçmək üçün səsvermə</p>
+        <button class="main-btn" onclick="startVote()">Səsverməyə Başla</button>
     </div>
 </div>
 
@@ -194,42 +184,30 @@ h1{
     <div class="card">
         <h1>Namizəd Seçimi</h1>
 
-        <p class="subtitle">
-            Zəhmət olmasa ən uyğun namizədi seçin.
-        </p>
-
         <div class="candidates">
 
             <div class="candidate">
                 <div class="avatar">👑</div>
                 <div class="name">Ramin</div>
-                <button class="vote-btn good" onclick="voteRamin()">
-                    Səs Ver
-                </button>
+                <button class="vote-btn good" onclick="voteRamin()">Səs Ver</button>
             </div>
 
             <div class="candidate">
                 <div class="avatar">🤓</div>
                 <div class="name">Namizəd A</div>
-                <button class="vote-btn runaway">
-                    Səs Ver
-                </button>
+                <button class="vote-btn runaway">Səs Ver</button>
             </div>
 
             <div class="candidate">
                 <div class="avatar">😎</div>
                 <div class="name">Namizəd B</div>
-                <button class="vote-btn runaway">
-                    Səs Ver
-                </button>
+                <button class="vote-btn runaway">Səs Ver</button>
             </div>
 
             <div class="candidate">
                 <div class="avatar">🧐</div>
                 <div class="name">Namizəd C</div>
-                <button class="vote-btn runaway">
-                    Səs Ver
-                </button>
+                <button class="vote-btn runaway">Səs Ver</button>
             </div>
 
         </div>
@@ -241,13 +219,8 @@ h1{
 <div id="success" class="screen hidden">
     <div class="card">
         <div class="success-title">🎉</div>
-
         <h1>Düzgün Seçim!</h1>
-
-        <p class="success-text">
-            Səsvermədə iştirak etdiyiniz üçün təşəkkür edirik.
-            Düzgün namizədi seçdiniz.
-        </p>
+        <p class="success-text">Səsvermədə iştirak etdiyiniz üçün təşəkkürlər.</p>
     </div>
 </div>
 
@@ -261,63 +234,45 @@ function startVote(){
 function voteRamin(){
     document.getElementById("vote").classList.add("hidden");
     document.getElementById("success").classList.remove("hidden");
-
     createConfetti();
 
-    const audio = new Audio(
-      "https://www.soundjay.com/human/applause-8.mp3"
-    );
-
+    const audio = new Audio("https://www.soundjay.com/human/applause-8.mp3");
     audio.play().catch(()=>{});
 }
 
 document.querySelectorAll(".runaway").forEach(btn=>{
-
     btn.addEventListener("mouseenter",()=>{
 
-        const x=Math.random()*(window.innerWidth-150);
-        const y=Math.random()*(window.innerHeight-80);
+        const rect = btn.getBoundingClientRect();
 
-        btn.style.position="fixed";
-        btn.style.left=x+"px";
-        btn.style.top=y+"px";
+        const x = Math.random() * (window.innerWidth - rect.width);
+        const y = Math.random() * (window.innerHeight - rect.height);
 
-        const texts=[
-            "Yox 😅",
-            "Başqa seçim et 😎",
-            "Tut görək 😂",
-            "Mümkün deyil 🚀"
-        ];
+        btn.style.position = "fixed";
+        btn.style.left = x + "px";
+        btn.style.top = y + "px";
+        btn.style.width = rect.width + "px";
 
-        document.getElementById("message").innerText=
+        const texts = ["Yox 😅","Başqa seçim 😎","Tut görək 😂","Mümkün deyil 🚀"];
+
+        document.getElementById("message").innerText =
             texts[Math.floor(Math.random()*texts.length)];
     });
-
 });
 
 function createConfetti(){
-
     for(let i=0;i<120;i++){
-
         const conf=document.createElement("div");
-
         conf.classList.add("confetti");
-
         conf.style.left=Math.random()*100+"vw";
-
-        conf.style.background=
-        `hsl(${Math.random()*360},100%,50%)`;
-
-        conf.style.animationDuration=
-        (Math.random()*3+2)+"s";
-
+        conf.style.background=`hsl(${Math.random()*360},100%,50%)`;
+        conf.style.animationDuration=(Math.random()*3+2)+"s";
         document.body.appendChild(conf);
 
-        setTimeout(()=>{
-            conf.remove();
-        },5000);
+        setTimeout(()=>conf.remove(),5000);
     }
 }
+
 </script>
 
 </body>
