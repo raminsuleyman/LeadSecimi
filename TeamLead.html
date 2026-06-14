@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Team Leader Seçimi</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Inter,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    overflow:hidden;
+    background:linear-gradient(-45deg,#0f172a,#1e293b,#312e81,#0f172a);
+    background-size:400% 400%;
+    animation:bg 12s ease infinite;
+    color:white;
+}
+
+@keyframes bg{
+    0%{background-position:0 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0 50%}
+}
+
+.screen{
+    width:100%;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.hidden{
+    display:none;
+}
+
+.card{
+    width:100%;
+    max-width:900px;
+    background:rgba(255,255,255,.08);
+    backdrop-filter:blur(18px);
+    border:1px solid rgba(255,255,255,.15);
+    border-radius:30px;
+    padding:40px;
+    text-align:center;
+    box-shadow:0 20px 60px rgba(0,0,0,.3);
+}
+
+h1{
+    font-size:3rem;
+    margin-bottom:20px;
+}
+
+.subtitle{
+    opacity:.85;
+    margin-bottom:35px;
+    line-height:1.7;
+}
+
+.main-btn{
+    border:none;
+    cursor:pointer;
+    padding:16px 32px;
+    border-radius:15px;
+    background:#22c55e;
+    color:white;
+    font-size:1rem;
+    font-weight:700;
+    transition:.3s;
+}
+
+.main-btn:hover{
+    transform:translateY(-3px);
+}
+
+.candidates{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+    margin-top:30px;
+}
+
+.candidate{
+    background:rgba(255,255,255,.08);
+    border-radius:20px;
+    padding:20px;
+    position:relative;
+}
+
+.avatar{
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:2rem;
+    margin:auto;
+    margin-bottom:15px;
+    background:rgba(255,255,255,.12);
+}
+
+.name{
+    font-weight:700;
+    margin-bottom:15px;
+}
+
+.vote-btn{
+    width:100%;
+    border:none;
+    cursor:pointer;
+    border-radius:12px;
+    padding:12px;
+    font-weight:700;
+}
+
+.good{
+    background:#22c55e;
+    color:white;
+}
+
+.runaway{
+    background:#ef4444;
+    color:white;
+    position:relative;
+}
+
+#message{
+    margin-top:20px;
+    font-weight:700;
+    color:#facc15;
+    min-height:30px;
+}
+
+.success-title{
+    font-size:4rem;
+}
+
+.success-text{
+    margin-top:15px;
+    opacity:.9;
+}
+
+.confetti{
+    position:fixed;
+    width:10px;
+    height:10px;
+    animation:fall linear forwards;
+}
+
+@keyframes fall{
+    from{
+        transform:translateY(-50px) rotate(0);
+    }
+    to{
+        transform:translateY(110vh) rotate(720deg);
+    }
+}
+
+@media(max-width:700px){
+    h1{
+        font-size:2rem;
+    }
+}
+</style>
+</head>
+<body>
+
+<div id="welcome" class="screen">
+    <div class="card">
+        <h1>🏆 Team Leader Seçimi</h1>
+
+        <p class="subtitle">
+            Komandamızın gələcək liderini seçmək üçün keçirilən
+            yüksək səviyyəli və tamamilə obyektiv səsverməyə xoş gəlmisiniz.
+        </p>
+
+        <button class="main-btn" onclick="startVote()">
+            Səsverməyə Başla
+        </button>
+    </div>
+</div>
+
+<div id="vote" class="screen hidden">
+    <div class="card">
+        <h1>Namizəd Seçimi</h1>
+
+        <p class="subtitle">
+            Zəhmət olmasa ən uyğun namizədi seçin.
+        </p>
+
+        <div class="candidates">
+
+            <div class="candidate">
+                <div class="avatar">👑</div>
+                <div class="name">Ramin</div>
+                <button class="vote-btn good" onclick="voteRamin()">
+                    Səs Ver
+                </button>
+            </div>
+
+            <div class="candidate">
+                <div class="avatar">🤓</div>
+                <div class="name">Namizəd A</div>
+                <button class="vote-btn runaway">
+                    Səs Ver
+                </button>
+            </div>
+
+            <div class="candidate">
+                <div class="avatar">😎</div>
+                <div class="name">Namizəd B</div>
+                <button class="vote-btn runaway">
+                    Səs Ver
+                </button>
+            </div>
+
+            <div class="candidate">
+                <div class="avatar">🧐</div>
+                <div class="name">Namizəd C</div>
+                <button class="vote-btn runaway">
+                    Səs Ver
+                </button>
+            </div>
+
+        </div>
+
+        <div id="message"></div>
+    </div>
+</div>
+
+<div id="success" class="screen hidden">
+    <div class="card">
+        <div class="success-title">🎉</div>
+
+        <h1>Düzgün Seçim!</h1>
+
+        <p class="success-text">
+            Səsvermədə iştirak etdiyiniz üçün təşəkkür edirik.
+            Düzgün namizədi seçdiniz.
+        </p>
+    </div>
+</div>
+
+<script>
+
+function startVote(){
+    document.getElementById("welcome").classList.add("hidden");
+    document.getElementById("vote").classList.remove("hidden");
+}
+
+function voteRamin(){
+    document.getElementById("vote").classList.add("hidden");
+    document.getElementById("success").classList.remove("hidden");
+
+    createConfetti();
+
+    const audio = new Audio(
+      "https://www.soundjay.com/human/applause-8.mp3"
+    );
+
+    audio.play().catch(()=>{});
+}
+
+document.querySelectorAll(".runaway").forEach(btn=>{
+
+    btn.addEventListener("mouseenter",()=>{
+
+        const x=Math.random()*(window.innerWidth-150);
+        const y=Math.random()*(window.innerHeight-80);
+
+        btn.style.position="fixed";
+        btn.style.left=x+"px";
+        btn.style.top=y+"px";
+
+        const texts=[
+            "Yox 😅",
+            "Başqa seçim et 😎",
+            "Tut görək 😂",
+            "Mümkün deyil 🚀"
+        ];
+
+        document.getElementById("message").innerText=
+            texts[Math.floor(Math.random()*texts.length)];
+    });
+
+});
+
+function createConfetti(){
+
+    for(let i=0;i<120;i++){
+
+        const conf=document.createElement("div");
+
+        conf.classList.add("confetti");
+
+        conf.style.left=Math.random()*100+"vw";
+
+        conf.style.background=
+        `hsl(${Math.random()*360},100%,50%)`;
+
+        conf.style.animationDuration=
+        (Math.random()*3+2)+"s";
+
+        document.body.appendChild(conf);
+
+        setTimeout(()=>{
+            conf.remove();
+        },5000);
+    }
+}
+</script>
+
+</body>
+</html>
